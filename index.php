@@ -10,6 +10,7 @@
 
   // Filter by status
   function  filterByStatus(array $tasks, string $status) {
+    $filteredArray = [];
     foreach($tasks as $task) {
       if($task['status'] == $status) {
         $filteredArray[] = $task;
@@ -21,14 +22,35 @@
   $result = filterByStatus($tasks, "done");
   print_r($result);
 
+  echo "\n";
+
   echo "[\n";
     foreach($result as $task) {
       echo "    [\"id\" => \"{$task['id']}\", \"title\" => \"{$task['title']}\", \"status\" => \"{$task['status']}\", \"due\" => \"{$task['due']}\"],\n";
     }
   echo "]";
 
+  echo "\n\n-----------------------------------------------------------------\n\n";
 
+
+  // group by status
   function groupByStatus(array $tasks) {
+    $filteredArray = [];
 
+    foreach($tasks as $task) {
+      if(isset($filteredArray[$task['status']])) {
+        // Add value(task) to an existing key(status) in the filteredArray
+        $filteredArray[$task['status']][] = $task;
+      }
+      else {
+        // Add key(status) value(task) when the key(status) is not exist in the filteredArray
+        $filteredArray[$task['status']] = [$task];
+
+      }
+    }
+    return $filteredArray;
   }
+
+  $result = groupByStatus($tasks);
+  print_r($result);
 ?> 
